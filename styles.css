@@ -1,0 +1,165 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+    overflow: hidden;
+    position: relative;
+}
+
+/* 1. ESTRELAS (Usando um truque de box-shadow para performance) */
+.stars {
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    /* Criando várias estrelas em posições aleatórias */
+    box-shadow:
+        10vw 20vh #fff, 35vw 45vh #fff, 80vw 10vh #fff,
+        20vw 80vh #fff, 60vw 30vh #56ccf2, 90vw 90vh #fff,
+        15vw 5vh #fff, 50vw 50vh #bb6bd9, 75vw 65vh #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* 2. ESTRELA CADENTE */
+.shooting-star {
+    position: absolute;
+    top: 20%;
+    left: -10%;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1), transparent);
+    animation: shooting 5s linear infinite;
+    z-index: 1;
+}
+
+@keyframes shooting {
+    0% {
+        transform: translateX(0) translateY(0) rotate(20deg);
+        opacity: 1;
+    }
+
+    20% {
+        transform: translateX(120vw) translateY(30vh) rotate(20deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(120vw) translateY(30vh) rotate(20deg);
+        opacity: 0;
+    }
+}
+
+/* 3. O ECLIPSE SCI-FI */
+.moon {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background-color: #050505;
+    /* Corpo escuro da lua */
+    position: relative;
+    z-index: 10;
+    box-shadow: inset -10px -10px 20px rgba(255, 255, 255, 0.1);
+}
+
+.moon::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    z-index: -1;
+    background-color: #00f2ff;
+    /* Cor Neon Sci-Fi */
+    animation: sci-fi-eclipse 4s ease-in-out infinite alternate;
+}
+
+@keyframes sci-fi-eclipse {
+    0% {
+        transform: scale(0.95) translate(-15px, 10px);
+        box-shadow: 0 0 20px #00f2ff, 0 0 40px #7000ff;
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.05) translate(0px, 0px);
+        box-shadow: 0 0 50px #00f2ff, 0 0 100px #7000ff, 0 0 150px #00f2ff;
+        opacity: 1;
+    }
+}
+
+/* Efeito de Tremor (Glitch) */
+.glitch-effect::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid #ff00ff;
+    /* Cor de interferência (Magenta) */
+    z-index: -2;
+    opacity: 0;
+    animation: glitch-anim 4s infinite;
+}
+
+@keyframes glitch-anim {
+
+    /* O segredo do glitch são intervalos curtos de movimento */
+    0%,
+    90%,
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+
+    91% {
+        opacity: 0.8;
+        transform: scale(1.1) translate(-10px, 5px);
+        filter: hue-rotate(90deg) blur(2px);
+    }
+
+    93% {
+        opacity: 0.5;
+        transform: scale(0.95) translate(10px, -5px);
+    }
+
+    95% {
+        opacity: 0.8;
+        transform: scale(1.05) translate(-5px, -10px);
+        filter: blur(0px);
+    }
+}
+
+/* Adicionando um ruído sutil no fundo para o clima Sci-Fi */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    /* Textura de poeira */
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 5;
+}
+
+@media (max-width: 768px) {
+    .moon {
+        width: 180px;
+        height: 180px;
+    }
+}
