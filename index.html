@@ -9,6 +9,11 @@
 </head>
 
 <body>
+    <div class="controls">
+        <label for="colorPicker">Personalize a Energia:</label>
+        <input type="color" id="colorPicker" value="#00f2ff">
+    </div>
+
     <div id="parallax-stars" class="stars"></div>
     <div class="shooting-star"></div>
 
@@ -34,6 +39,18 @@
             // No touch, pegamos a posição do primeiro dedo (touches[0])
             const touch = e.touches[0];
             moveStars(touch.clientX, touch.clientY);
+        });
+
+        const colorPicker = document.getElementById('colorPicker');
+
+        colorPicker.addEventListener('input', (e) => {
+            const newColor = e.target.value;
+
+            // Altera a variável --primary-neon no :root do CSS
+            document.documentElement.style.setProperty('--primary-neon', newColor);
+
+            // Opcional: faz a borda do painel mudar junto
+            document.querySelector('.controls').style.borderColor = newColor;
         });
     </script>
 </body>

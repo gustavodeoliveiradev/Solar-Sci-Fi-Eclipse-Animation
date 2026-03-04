@@ -6,18 +6,18 @@ Projeto de estudo de animações avançadas em CSS e interatividade com JavaScri
 Acesse o projeto online: [Clique aqui para ver o Eclipse](https://gustavodeoliveiradev.github.io/Solar-Sci-Fi-Eclipse-Animation/)
 
 ## 🛠️ Tecnologias Utilizadas
-- **HTML5**: Estrutura semântica.
-- **CSS3**: Animações complexas com `@keyframes`, pseudo-elementos (`::before`, `::after`), efeitos de transparência e filtros.
-- **JavaScript**: Lógica de manipulação do DOM para efeitos de profundidade.
-- **Git/GitHub**: Controle de versão e hospedagem via GitHub Pages.
+- **HTML5**: Estrutura semântica e controles de entrada (Color Picker).
+- **CSS3**: Variáveis CSS (`:root`), animações `@keyframes`, pseudo-elementos (`::before`, `::after`), filtros e design responsivo.
+- **JavaScript**: Lógica de manipulação do DOM, controle dinâmico de variáveis CSS e suporte a eventos de Mouse/Touch.
+- **Git/GitHub**: Versionamento contínuo, GitHub Pages e deploy automatizado.
 
 ## 🧪 Experimentos Aplicados
 Neste projeto, explorei conceitos de front-end avançado:
-1. **Efeito Parallax Dinâmico**: Implementação de JavaScript para rastrear o movimento do mouse/toque e deslocar as estrelas, criando profundidade 3D.
-2. **Design Responsivo & Mobile First**: Adaptação de eventos de `mousemove` para `touchmove`, garantindo a experiência em smartphones.
-3. **Estrelas Dinâmicas**: Uso de múltiplos `box-shadow` em uma única `div` para otimização de performance.
-4. **Efeito Glitch**: Simulação de interferência de sinal usando animações não-lineares, `hue-rotate` e `filter: blur`.
-5. **Estética Sci-Fi**: Paleta de cores baseada em neon (Ciano e Magenta) com texturas de ruído sobrepostas.
+1. **Arquitetura CSS**: Uso de variáveis globais para facilitar a manutenção e permitir temas customizáveis.
+2. **Interatividade & UX**: Criação de um seletor de cores em tempo real e suporte completo a dispositivos móveis(Mobile First).
+3. **Profundidade visual**: Implementação de efeito Parallax fluído e estrelas otimizadas usando apenas uma `div` com múltiplos `box-shadow`.
+4. **Estética Sci-Fi**: Desenvolvimento de efeitos de `Glitch` não-lineares, distorções de cor(`hue-rotate`) e texturas de ruído sobrepostas.
+5. **Workflow Profissional**: Prática de sincronização constante entre VS Code e repositório remoto, mantendo o histórico de alterações organizado.
 
 ## 👤 Autor
 Desenvolvido por **[GusDev](https://github.com/gustavodeoliveiradev)**.

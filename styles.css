@@ -1,7 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --primary-neon: #00f2ff;
+    /* Ciano (Eclipse e Brilho) */
+    --secondary-neon: #ff00ff;
+    /* Magenta (Glitch e detalhes) */
+    --space-bg-start: #1b2735;
+    /* Azul marinho do fundo */
+    --space-bg-end: #090a0f;
+    /* Preto do fundo */
+    --star-white: #ffffff;
+    --primary-star-shadow: #56ccf2;
+    --secondary-star-shadow: #bb6bd9;
+    /* Cor das estrelas */
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
 }
 
 body {
@@ -9,9 +27,32 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+    background: radial-gradient(circle at center, var(--space-bg-start) 0%, var(--space-bg-end) 100%);
     overflow: hidden;
     position: relative;
+}
+
+.controls {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    /* Garante que fique acima de tudo */
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid var(--primary-neon);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#colorPicker {
+    cursor: pointer;
+    border: none;
+    width: 50px;
+    height: 30px;
 }
 
 /* 1. ESTRELAS (Usando um truque de box-shadow para performance) */
@@ -21,13 +62,20 @@ body {
     background: transparent;
     /* Criando várias estrelas em posições aleatórias */
     box-shadow:
-        10vw 20vh #fff, 35vw 45vh #fff, 80vw 10vh #fff,
-        20vw 80vh #fff, 60vw 30vh #56ccf2, 90vw 90vh #fff,
-        15vw 5vh #fff, 50vw 50vh #bb6bd9, 75vw 65vh #fff;
+        10vw 20vh var(--star-white),
+        35vw 45vh var(--star-white),
+        80vw 10vh var(--star-white),
+        20vw 80vh var(--star-white),
+        60vw 30vh var(--primary-star-shadow),
+        90vw 90vh var(--star-white),
+        15vw 5vh var(--star-white),
+        50vw 50vh var(--secondary-star-shadow),
+        75vw 65vh var(--star-white);
     position: absolute;
     top: 0;
     left: 0;
     z-index: 0;
+    transition: transform 0.1s ease-out;
 }
 
 /* 2. ESTRELA CADENTE */
@@ -78,7 +126,7 @@ body {
     height: 100%;
     border-radius: 50%;
     z-index: -1;
-    background-color: #00f2ff;
+    background-color: var(--primary-neon);
     /* Cor Neon Sci-Fi */
     animation: sci-fi-eclipse 4s ease-in-out infinite alternate;
 }
@@ -86,13 +134,13 @@ body {
 @keyframes sci-fi-eclipse {
     0% {
         transform: scale(0.95) translate(-15px, 10px);
-        box-shadow: 0 0 20px #00f2ff, 0 0 40px #7000ff;
+        box-shadow: 0 0 20px var(--primary-neon), 0 0 40px var(--secondary-neon);
         opacity: 0.5;
     }
 
     100% {
         transform: scale(1.05) translate(0px, 0px);
-        box-shadow: 0 0 50px #00f2ff, 0 0 100px #7000ff, 0 0 150px #00f2ff;
+        box-shadow: 0 0 50px var(--primary-neon), 0 0 100px var(--secondary-neon), 0 0 150px var(--primary-neon);
         opacity: 1;
     }
 }
@@ -107,7 +155,7 @@ body {
     height: 100%;
     border-radius: 50%;
     background: transparent;
-    border: 2px solid #ff00ff;
+    border: 2px solid var(--secondary-neon);
     /* Cor de interferência (Magenta) */
     z-index: -2;
     opacity: 0;
