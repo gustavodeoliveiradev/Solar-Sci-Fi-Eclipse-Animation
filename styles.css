@@ -45,6 +45,7 @@ body {
     color: white;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
 }
 
@@ -203,6 +204,37 @@ body::before {
     opacity: 0.15;
     pointer-events: none;
     z-index: 5;
+}
+
+.audio-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.sci-fi-btn {
+    background: transparent;
+    color: var(--primary-neon);
+    border: 2px solid var(--primary-neon);
+    padding: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+    box-shadow: 0 0 10px var(--primary-neon);
+}
+
+.sci-fi-btn:hover {
+    background: var(--primary-neon);
+    color: var(--space-bg-end);
+    box-shadow: 0 0 20px var(--primary-neon);
+}
+
+.sci-fi-btn.active {
+    border-color: var(--secondary-neon);
+    color: var(--secondary-neon);
+    box-shadow: 0 0 10px var(--secondary-neon);
 }
 
 @media (max-width: 768px) {

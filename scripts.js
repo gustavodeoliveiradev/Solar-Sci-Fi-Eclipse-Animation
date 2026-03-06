@@ -30,3 +30,47 @@ colorPicker.addEventListener('input', (e) => {
     // Opcional: faz a borda do painel mudar junto
     document.querySelector('.controls').style.borderColor = newColor;
 });
+
+const btnAudio = document.getElementById('btn-audio');
+const bgAmbient = document.getElementById('bg-ambient');
+const glitchSfx = document.getElementById('glitch-sfx');
+// Selecionamos o elemento que tem a animação no CSS
+const glitchElement = document.querySelector('.glitch-effect');
+
+let isPlaying = false;
+
+// 1. O BOTÃO: Ele apenas liga o sistema e o som de fundo
+btnAudio.addEventListener('click', () => {
+    if (!isPlaying) {
+        bgAmbient.play();
+        bgAmbient.volume = 0.4;
+
+        btnAudio.innerText = "SISTEMAS ONLINE 🚀";
+        btnAudio.classList.add('active');
+        isPlaying = true;
+    } else {
+        bgAmbient.pause();
+        glitchSfx.pause(); // Garante que o som do glitch pare também
+
+        btnAudio.innerText = "SISTEMAS OFFLINE 📡";
+        btnAudio.classList.remove('active');
+        isPlaying = false;
+    }
+});
+
+// 2. O MAESTRO: Ele vigia a animação e solta o som no momento certo
+// 'animationiteration' acontece toda vez que a animação de 4s reseta
+glitchElement.addEventListener('animationiteration', () => {
+    if (isPlaying) {
+        // Como o glitch visual no CSS acontece entre 91% e 95%...
+        // ...nós esperamos 3.6 segundos (90% de 4s) para soltar o som!
+        setTimeout(() => {
+            if (isPlaying) { // Verifica se o usuário não desligou o som nesse meio tempo
+                glitchSfx.currentTime = 0; // Volta o som para o início
+                glitchSfx.volume = 0.2;
+                glitchSfx.play();
+            }
+        }, 3600);
+    }
+});
+

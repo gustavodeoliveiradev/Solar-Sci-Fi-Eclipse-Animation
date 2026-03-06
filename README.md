@@ -6,18 +6,18 @@ Projeto de estudo de animações avançadas em CSS e interatividade com JavaScri
 Acesse o projeto online: [Clique aqui para ver o Eclipse](https://gustavodeoliveiradev.github.io/Solar-Sci-Fi-Eclipse-Animation/)
 
 ## 🛠️ Tecnologias Utilizadas
-- **HTML5**: Estrutura semântica e controles de entrada (Color Picker).
-- **CSS3**: Variáveis CSS (`:root`), animações `@keyframes`, pseudo-elementos (`::before`, `::after`), filtros e design responsivo.
-- **JavaScript**: Lógica de manipulação do DOM, controle dinâmico de variáveis CSS e suporte a eventos de Mouse/Touch.
-- **Git/GitHub**: Versionamento contínuo, GitHub Pages e deploy automatizado.
+- **HTML5**: Estrutura semântica, controles de entrada (`color`) e manipulação de elementos de áudio.
+- **CSS3**: Variáveis (`:root`), animações `@keyframes`, sincronizadas e design responsivo.
+- **JavaScript**: Modularização de código, lógica de sincronia entre eventos de animação (`animationiteration`) e a *Web Audio API*.
+- **Git/GitHub**: Versionamento contínuo e fluxo de trabalho profissional.
 
 ## 🧪 Experimentos Aplicados
 Neste projeto, explorei conceitos de front-end avançado:
-1. **Arquitetura CSS**: Uso de variáveis globais para facilitar a manutenção e permitir temas customizáveis.
-2. **Interatividade & UX**: Criação de um seletor de cores em tempo real e suporte completo a dispositivos móveis(Mobile First).
-3. **Profundidade visual**: Implementação de efeito Parallax fluído e estrelas otimizadas usando apenas uma `div` com múltiplos `box-shadow`.
-4. **Estética Sci-Fi**: Desenvolvimento de efeitos de `Glitch` não-lineares, distorções de cor(`hue-rotate`) e texturas de ruído sobrepostas.
-5. **Workflow Profissional**: Prática de sincronização constante entre VS Code e repositório remoto, mantendo o histórico de alterações organizado.
+1. **Engenharia Audiovisual**: Sincronização de efeitos sonoros (SFX) com gatilhos visuais de CSS, utilizando `setTimeout` e ouvintes de eventos de animação para precisão milimétrica.
+2. **Modularização de Software**: Separação da lógica de programação em arquivos externos (`script.js`), melhorando a organização e a manutenção do projeto.
+3. **Interatividade Imersiva**: Implementação de um "Painel de Controle" para gerenciar sistemas de áudio (Loop ambiente e SFX) respeitando as políticas de interação do navegador.
+4. **Arquitetura CSS**: Uso de variáveis globais para temas dinâmicos e manipulação de pseudo-elementos (`::before`/`::after`) para texturas de ruído.
+5. **Profundidade & UX**: Efeito Parallax fluido com suporte a eventos de `Touch` e `Mouse`, garantindo acessibilidade em todos os dispositivos.
 
 ## 👤 Autor
 Desenvolvido por **[GusDev](https://github.com/gustavodeoliveiradev)**.
