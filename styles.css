@@ -2,17 +2,12 @@
 
 :root {
     --primary-neon: #00f2ff;
-    /* Ciano (Eclipse e Brilho) */
     --secondary-neon: #ff00ff;
-    /* Magenta (Glitch e detalhes) */
     --space-bg-start: #1b2735;
-    /* Azul marinho do fundo */
     --space-bg-end: #090a0f;
-    /* Preto do fundo */
     --star-white: #ffffff;
     --primary-star-shadow: #56ccf2;
     --secondary-star-shadow: #bb6bd9;
-    /* Cor das estrelas */
 }
 
 * {
@@ -22,13 +17,19 @@
     font-family: "Montserrat", sans-serif;
 }
 
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background: radial-gradient(circle at center, var(--space-bg-start) 0%, var(--space-bg-end) 100%);
-    overflow: hidden;
     position: relative;
 }
 
@@ -37,7 +38,6 @@ body {
     top: 20px;
     left: 20px;
     z-index: 100;
-    /* Garante que fique acima de tudo */
     background: rgba(0, 0, 0, 0.5);
     padding: 15px;
     border-radius: 15px;
@@ -47,6 +47,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    backdrop-filter: blur(5px);
 }
 
 #colorPicker {
@@ -54,14 +55,44 @@ body {
     border: none;
     width: 50px;
     height: 30px;
+    background: none;
 }
 
-/* 1. ESTRELAS (Usando um truque de box-shadow para performance) */
+/* Container central - ESSENCIAL para responsividade */
+.galaxy-center {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    /* Mantém proporção quadrada responsiva */
+    width: min(60vw, 60vh);
+    height: min(60vw, 60vh);
+    max-width: 400px;
+    max-height: 400px;
+}
+
+/* Estrelas responsivas com múltiplas camadas */
 .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    /* Importante para o parallax funcionar */
+    will-change: transform;
+    transition: transform 0.1s ease-out;
+}
+
+/* Camada 1 de estrelas - pequenas */
+.stars::before {
+    content: "";
+    position: absolute;
     width: 2px;
     height: 2px;
     background: transparent;
-    /* Criando várias estrelas em posições aleatórias */
     box-shadow:
         10vw 20vh var(--star-white),
         35vw 45vh var(--star-white),
@@ -71,15 +102,40 @@ body {
         90vw 90vh var(--star-white),
         15vw 5vh var(--star-white),
         50vw 50vh var(--secondary-star-shadow),
-        75vw 65vh var(--star-white);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    transition: transform 0.1s ease-out;
+        75vw 65vh var(--star-white),
+        25vw 15vh var(--star-white),
+        70vw 40vh var(--primary-star-shadow),
+        40vw 70vh var(--star-white);
+    animation: twinkle 3s ease-in-out infinite alternate;
 }
 
-/* 2. ESTRELA CADENTE */
+/* Camada 2 de estrelas - médias */
+.stars::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: transparent;
+    box-shadow:
+        5vw 50vh var(--star-white),
+        45vw 10vh var(--secondary-star-shadow),
+        85vw 60vh var(--star-white),
+        30vw 90vh var(--primary-star-shadow),
+        65vw 25vh var(--star-white),
+        95vw 75vh var(--secondary-star-shadow);
+    animation: twinkle 4s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 .shooting-star {
     position: absolute;
     top: 20%;
@@ -89,6 +145,7 @@ body {
     background: linear-gradient(90deg, rgba(255, 255, 255, 1), transparent);
     animation: shooting 5s linear infinite;
     z-index: 1;
+    pointer-events: none;
 }
 
 @keyframes shooting {
@@ -108,15 +165,14 @@ body {
     }
 }
 
-/* 3. O ECLIPSE SCI-FI */
+/* ECLIPSE - Agora responsivo com unidades relativas */
 .moon {
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     background-color: #050505;
-    /* Corpo escuro da lua */
     position: relative;
-    z-index: 10;
+    z-index: 2; /* Lua escura na frente (z-index maior) */
     box-shadow: inset -10px -10px 20px rgba(255, 255, 255, 0.1);
 }
 
@@ -126,27 +182,28 @@ body {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    z-index: -1;
+    z-index: -1; /* Brilho neon atrás (z-index menor) */
     background-color: var(--primary-neon);
-    /* Cor Neon Sci-Fi */
     animation: sci-fi-eclipse 4s ease-in-out infinite alternate;
+    /* Garante que o brilho apareça atrás */
+    top: 0;
+    left: 0;
 }
 
 @keyframes sci-fi-eclipse {
     0% {
-        transform: scale(0.95) translate(-15px, 10px);
+        transform: scale(0.95) translate(-5%, 3%);
         box-shadow: 0 0 20px var(--primary-neon), 0 0 40px var(--secondary-neon);
         opacity: 0.5;
     }
 
     100% {
-        transform: scale(1.05) translate(0px, 0px);
+        transform: scale(1.05) translate(0%, 0%);
         box-shadow: 0 0 50px var(--primary-neon), 0 0 100px var(--secondary-neon), 0 0 150px var(--primary-neon);
         opacity: 1;
     }
 }
 
-/* Efeito de Tremor (Glitch) */
 .glitch-effect::after {
     content: "";
     position: absolute;
@@ -157,15 +214,13 @@ body {
     border-radius: 50%;
     background: transparent;
     border: 2px solid var(--secondary-neon);
-    /* Cor de interferência (Magenta) */
-    z-index: -2;
+    z-index: -2; /* Mais atrás ainda */
     opacity: 0;
     animation: glitch-anim 4s infinite;
 }
 
 @keyframes glitch-anim {
 
-    /* O segredo do glitch são intervalos curtos de movimento */
     0%,
     90%,
     100% {
@@ -175,23 +230,22 @@ body {
 
     91% {
         opacity: 0.8;
-        transform: scale(1.1) translate(-10px, 5px);
+        transform: scale(1.1) translate(-5%, 2%);
         filter: hue-rotate(90deg) blur(2px);
     }
 
     93% {
         opacity: 0.5;
-        transform: scale(0.95) translate(10px, -5px);
+        transform: scale(0.95) translate(5%, -2%);
     }
 
     95% {
         opacity: 0.8;
-        transform: scale(1.05) translate(-5px, -10px);
+        transform: scale(1.05) translate(-2%, -5%);
         filter: blur(0px);
     }
 }
 
-/* Adicionando um ruído sutil no fundo para o clima Sci-Fi */
 body::before {
     content: "";
     position: fixed;
@@ -200,7 +254,6 @@ body::before {
     width: 100%;
     height: 100%;
     background: url('https://www.transparenttextures.com/patterns/stardust.png');
-    /* Textura de poeira */
     opacity: 0.15;
     pointer-events: none;
     z-index: 5;
@@ -223,6 +276,8 @@ body::before {
     text-transform: uppercase;
     transition: 0.3s;
     box-shadow: 0 0 10px var(--primary-neon);
+    font-size: 14px;
+    white-space: nowrap;
 }
 
 .sci-fi-btn:hover {
@@ -237,9 +292,66 @@ body::before {
     box-shadow: 0 0 10px var(--secondary-neon);
 }
 
+/* RESPONSIVIDADE APRIMORADA */
 @media (max-width: 768px) {
-    .moon {
-        width: 180px;
-        height: 180px;
+    .galaxy-center {
+        width: min(70vw, 70vh);
+        height: min(70vw, 70vh);
+    }
+
+    .controls {
+        top: 10px;
+        left: 10px;
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .audio-controls {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .sci-fi-btn {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    .shooting-star {
+        animation-duration: 3s;
+    }
+}
+
+@media (max-width: 480px) {
+    .galaxy-center {
+        width: min(80vw, 80vh);
+        height: min(80vw, 80vh);
+    }
+
+    .controls {
+        width: auto;
+        max-width: 150px;
+    }
+
+    #colorPicker {
+        width: 40px;
+        height: 25px;
+    }
+}
+
+/* Landscape mode em mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .galaxy-center {
+        width: min(50vh, 50vw);
+        height: min(50vh, 50vw);
+    }
+
+    .controls {
+        top: 5px;
+        left: 5px;
+    }
+
+    .audio-controls {
+        bottom: 5px;
+        right: 5px;
     }
 }

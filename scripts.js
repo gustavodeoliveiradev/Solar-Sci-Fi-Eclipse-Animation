@@ -1,34 +1,39 @@
+// Função única para calcular o movimento
 const stars = document.getElementById("parallax-stars");
 
-// Função única para calcular o movimento
-const moveStars = (clientX, clientY) => {
-    let x = clientX / window.innerWidth;
-    let y = clientY / window.innerHeight;
-    stars.style.transform = `translate(-${x * 50}px, -${y * 50}px)`;
+const moveStars = (x, y) => {
+    // Calcula porcentagem da posição (0 a 1)
+    const xPercent = x / window.innerWidth;
+    const yPercent = y / window.innerHeight;
+    
+    // Movimento suave inverso (parallax)
+    const moveX = (xPercent - 0.5) * 30; // Range: -15px a +15px
+    const moveY = (yPercent - 0.5) * 30;
+    
+    stars.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
 };
 
-// Para Computador (Mouse)
+// Mouse (desktop)
 document.addEventListener("mousemove", (e) => {
     moveStars(e.clientX, e.clientY);
 });
 
-// Para Celular (Touch)
+// Touch (mobile) - CORRIGIDO
 document.addEventListener("touchmove", (e) => {
-    // No touch, pegamos a posição do primeiro dedo (touches[0])
+    e.preventDefault(); // Previne scroll durante o parallax
     const touch = e.touches[0];
     moveStars(touch.clientX, touch.clientY);
-});
+}, { passive: false });
 
-const colorPicker = document.getElementById('colorPicker');
+// Também funciona com o toque inicial (touchstart)
+document.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+    moveStars(touch.clientX, touch.clientY);
+}, { passive: true });
 
-colorPicker.addEventListener('input', (e) => {
-    const newColor = e.target.value;
-
-    // Altera a variável --primary-neon no :root do CSS
-    document.documentElement.style.setProperty('--primary-neon', newColor);
-
-    // Opcional: faz a borda do painel mudar junto
-    document.querySelector('.controls').style.borderColor = newColor;
+// Reset suave quando sai da tela
+document.addEventListener("mouseleave", () => {
+    stars.style.transform = "translate(0, 0)";
 });
 
 const btnAudio = document.getElementById('btn-audio');
@@ -36,21 +41,48 @@ const bgAmbient = document.getElementById('bg-ambient');
 const glitchSfx = document.getElementById('glitch-sfx');
 // Selecionamos o elemento que tem a animação no CSS
 const glitchElement = document.querySelector('.glitch-effect');
+const sfxStartup = document.getElementById('sfx-startup');
+const sfxShutdown = document.getElementById('sfx-shutdown');
 
 let isPlaying = false;
 
-// 1. O BOTÃO: Ele apenas liga o sistema e o som de fundo
+const fadeOut = (audioElement) => {
+    // Pegamos o volume atual (ex: 0.4)
+    let volume = audioElement.volume;
+
+    const interval = setInterval(() => {
+        if (volume > 0.02) {
+            volume -= 0.02;
+            audioElement.volume = volume;
+        } else {
+            audioElement.volume = 0;
+            audioElement.pause();
+            clearInterval(interval);
+        }
+    }, 50); // A cada 50ms reduz um pouco
+};
+
+// 1. O BOTÃO: Ele liga e desliga os sons, além de mudar o texto e estilo
 btnAudio.addEventListener('click', () => {
     if (!isPlaying) {
-        bgAmbient.play();
-        bgAmbient.volume = 0.4;
+        sfxStartup.play();
+
+        setTimeout(() => {
+            bgAmbient.currentTime = 0;
+            bgAmbient.play();
+            bgAmbient.volume = 0.4; // Volume inicial limpo
+        }, 1000);
 
         btnAudio.innerText = "SISTEMAS ONLINE 🚀";
         btnAudio.classList.add('active');
         isPlaying = true;
     } else {
-        bgAmbient.pause();
-        glitchSfx.pause(); // Garante que o som do glitch pare também
+        sfxShutdown.play();
+
+        // 2. CHAME A FUNÇÃO AQUI (Substituindo o bgAmbient.pause())
+        fadeOut(bgAmbient);
+
+        glitchSfx.pause();
 
         btnAudio.innerText = "SISTEMAS OFFLINE 📡";
         btnAudio.classList.remove('active');
