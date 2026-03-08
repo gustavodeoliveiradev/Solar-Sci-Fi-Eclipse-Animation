@@ -3,13 +3,16 @@
 
 # 🌌 Neon Eclipse Protocol
 
-Projeto de estudo de animações avançadas em CSS e interatividade com JavaScript, transformando um exercício simples em uma experiência visual Sci-Fi imersiva.
+> Projeto de estudo de animações avançadas em CSS e interatividade com JavaScript, transformando um exercício simples em uma experiência visual Sci-Fi imersiva.
 
 ## 🚀 Demonstração
+
+![Preview do Projeto](/img/img.png)
+
 Acesse o projeto online: [Clique aqui para ver o Eclipse](https://gustavodeoliveiradev.github.io/Solar-Sci-Fi-Eclipse-Animation/)
 
 ## 🛠️ Tecnologias Utilizadas
-- **HTML5**: Estrutura semântica, controles de entrada (`&lt;input type="color"&gt;`) e manipulação de elementos de áudio.
+- **HTML5**: Estrutura semântica, controles de entrada (`<input type="color">`) e manipulação de elementos de áudio.
 - **CSS3**: Variáveis CSS (`:root`), animações `@keyframes` sincronizadas, pseudo-elementos (`::before`/`::after`) e design responsivo com `clamp()` e `min()`.
 - **JavaScript**: Manipulação de eventos de animação (`animationiteration`), sincronia audiovisual e interatividade multi-dispositivo (Mouse/Touch).
 - **Git/GitHub**: Versionamento contínuo e deploy via GitHub Pages.
