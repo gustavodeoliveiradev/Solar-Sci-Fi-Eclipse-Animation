@@ -1,3 +1,21 @@
+// Captura o input de cor
+const colorPicker = document.getElementById('colorPicker');
+
+// Escuta a mudança de cor
+colorPicker.addEventListener('input', (e) => {
+    const newColor = e.target.value;
+
+    // Altera a variável global --primary-neon que usamos em todo o CSS
+    document.documentElement.style.setProperty('--primary-neon', newColor);
+
+    // Faz a borda do painel de controle brilhar na mesma cor
+    const controls = document.querySelector('.controls');
+    if (controls) {
+        controls.style.borderColor = newColor;
+        controls.style.boxShadow = `0 0 15px ${newColor}`;
+    }
+});
+
 // Função única para calcular o movimento
 const stars = document.getElementById("parallax-stars");
 
@@ -5,11 +23,11 @@ const moveStars = (x, y) => {
     // Calcula porcentagem da posição (0 a 1)
     const xPercent = x / window.innerWidth;
     const yPercent = y / window.innerHeight;
-    
+
     // Movimento suave inverso (parallax)
     const moveX = (xPercent - 0.5) * 30; // Range: -15px a +15px
     const moveY = (yPercent - 0.5) * 30;
-    
+
     stars.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
 };
 
