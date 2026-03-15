@@ -1,42 +1,59 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/gustavodeoliveiradev/Solar-Sci-Fi-Eclipse-Animation?style=for-the-badge&color=00f2ff)
 ![GitHub repo size](https://img.shields.io/github/repo-size/gustavodeoliveiradev/Solar-Sci-Fi-Eclipse-Animation?style=for-the-badge&color=ff00ff)
+![License](https://img.shields.io/github/license/gustavodeoliveiradev/Solar-Sci-Fi-Eclipse-Animation?style=for-the-badge&color=green)
 
 # 🌌 Neon Eclipse Protocol
 
-> Projeto de estudo de animações avançadas em CSS e interatividade com JavaScript, transformando um exercício simples em uma experiência visual Sci-Fi imersiva.
+> **Status do Protocolo:** Operacional 🚀  
+> Uma experiência imersiva de Front-End focada em animações sincronizadas, design responsivo intrínseco e manipulação avançada de DOM.
 
-## 🚀 Demonstração
+## 🚀 Demonstração Visual
 
 ![Preview do Projeto](/img/img.png)
 
-Acesse o projeto online: [Clique aqui para ver o Eclipse](https://gustavodeoliveiradev.github.io/Solar-Sci-Fi-Eclipse-Animation/)
+Acesse o sistema em tempo real: [**Explorar o Neon Eclipse**](https://gustavodeoliveiradev.github.io/Solar-Sci-Fi-Eclipse-Animation/)
 
-## 🛠️ Tecnologias Utilizadas
-- **HTML5**: Estrutura semântica, controles de entrada (`<input type="color">`) e manipulação de elementos de áudio.
-- **CSS3**: Variáveis CSS (`:root`), animações `@keyframes` sincronizadas, pseudo-elementos (`::before`/`::after`) e design responsivo com `clamp()` e `min()`.
-- **JavaScript**: Manipulação de eventos de animação (`animationiteration`), sincronia audiovisual e interatividade multi-dispositivo (Mouse/Touch).
-- **Git/GitHub**: Versionamento contínuo e deploy via GitHub Pages.
+---
 
-## 🧪 Experimentos Aplicados
-Neste projeto, explorei conceitos de front-end avançado:
+## 🛠️ Stack Tecnológica & Diferenciais
 
-1. **Engenharia Audiovisual**: Sincronização de efeitos sonoros (SFX) com gatilhos visuais de CSS, utilizando `setTimeout` e ouvintes de eventos de animação para precisão milimétrica.
+### **Core**
+- **HTML5 Semântico**: Estruturação de controles e containers de áudio nativos.
+- **CSS3 Moderno**: 
+    - **Design Intrínseco**: Uso de `min(60vw, 60vh)` para garantir geometria circular perfeita sem Media Queries excessivas.
+    - **Animações Sincronizadas**: `@keyframes` complexos com múltiplos estágios para efeitos de Glitch e Eclipse.
+- **JavaScript ES6+**: 
+    - **Event Normalization**: Lógica unificada para `Mouse` e `Touch` (Parallax).
+    - **Audio Management**: Implementação de *Fade-Out* algorítmico e gatilhos baseados em `animationiteration`.
 
-2. **Arquitetura CSS Moderna**: Uso de variáveis globais para temas dinâmicos, manipulação de pseudo-elementos para camadas de efeitos (brilho neon, glitch, ruído) e unidades responsivas (`min()`, `vw/vh`) para manter proporções perfeitas em qualquer tela.
+---
 
-3. **Interatividade Imersiva**: Implementação de um "Painel de Controle" para gerenciar sistemas de áudio (loop ambiente e SFX), respeitando as políticas de autoplay dos navegadores.
+## 🧬 Dissecando a Engenharia (Deep Dive)
 
-4. **Efeito Parallax Cross-Device**: Movimento fluido das estrelas baseado na posição do cursor/toque, com suporte simultâneo a `mousemove` e `touchmove`, garantindo experiência consistente em desktop e mobile.
+Como um estudo aprofundado, o projeto focou em resolver três desafios principais:
 
-5. **Design Responsivo Avançado**: Breakpoints otimizados para portrait/landscape, mantendo o eclipse circular perfeito em qualquer dimensão de tela.
+### 1. Sincronia Audiovisual (O Maestro)
+Diferente de loops simples, o som de "Glitch" é disparado exatamente aos **91%** da animação CSS. Isso foi alcançado monitorando o ciclo da animação via JS e aplicando um `setTimeout` calculado sobre o `animation-duration`.
 
-## 📱 Responsividade
-O protocolo se adapta a qualquer dispositivo:
-- **Desktop**: Parallax com mouse, controles fixos nos cantos
-- **Mobile/Tablet**: Parallax com touch, layout adaptativo, prevenção de scroll indesejado
-- **Modo Paisagem**: Redimensionamento inteligente para telas baixas
+### 2. Parallax de Alta Performance
+As estrelas utilizam `will-change: transform` para forçar a renderização via GPU, garantindo que o cálculo de posição (baseado em porcentagem da Viewport) rode a **60 FPS** mesmo em dispositivos móveis.
 
-## 👤 Autor
-Desenvolvido por **[GusDev](https://github.com/gustavodeoliveiradev)**.
+### 3. Gerenciamento de Estado Dinâmico
+Utilização de **CSS Variables** injetadas via JavaScript para permitir que o usuário altere o tema de cor de todo o sistema (Lua, Brilho, Botões e Bordas) em tempo real através de um único ponto de controle (`:root`).
 
-*"Estudando para superar meus limites, estilo Gohan."* 🐉
+---
+
+## 📱 Protocolo de Responsividade
+- **Desktop**: Experiência completa com Parallax de alta precisão.
+- **Mobile**: Normalização de eventos de toque para evitar o scroll nativo durante a interação.
+- **Landscape**: Adaptação dinâmica para visualização horizontal em dispositivos pequenos.
+
+---
+
+## 👤 Desenvolvedor
+**GusDev** - [GitHub](https://github.com/gustavodeoliveiradev) | [LinkedIn](https://linkedin.com/in/lgustavodeoliveira)
+
+> *"Estudando para superar meus limites, estilo Gohan."* 🐉
+
+---
+Desenvolvido com ❤️ como parte do meu laboratório de estudos avançados.

@@ -1,73 +1,69 @@
-// Captura o input de cor
-const colorPicker = document.getElementById('colorPicker');
-
-// Escuta a mudança de cor
-colorPicker.addEventListener('input', (e) => {
-    const newColor = e.target.value;
-
-    // Altera a variável global --primary-neon que usamos em todo o CSS
-    document.documentElement.style.setProperty('--primary-neon', newColor);
-
-    // Faz a borda do painel de controle brilhar na mesma cor
-    const controls = document.querySelector('.controls');
-    if (controls) {
-        controls.style.borderColor = newColor;
-        controls.style.boxShadow = `0 0 15px ${newColor}`;
-    }
-});
-
-// Função única para calcular o movimento
+/* ==========================================================================
+   1. SELETORES E VARIÁVEIS GLOBAIS
+   ========================================================================== */
 const stars = document.getElementById("parallax-stars");
+const colorPicker = document.getElementById('colorPicker');
+const controlsPanel = document.querySelector('.controls');
+const glitchElement = document.querySelector('.glitch-effect');
 
-const moveStars = (x, y) => {
-    // Calcula porcentagem da posição (0 a 1)
-    const xPercent = x / window.innerWidth;
-    const yPercent = y / window.innerHeight;
-
-    // Movimento suave inverso (parallax)
-    const moveX = (xPercent - 0.5) * 30; // Range: -15px a +15px
-    const moveY = (yPercent - 0.5) * 30;
-
-    stars.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
-};
-
-// Mouse (desktop)
-document.addEventListener("mousemove", (e) => {
-    moveStars(e.clientX, e.clientY);
-});
-
-// Touch (mobile) - CORRIGIDO
-document.addEventListener("touchmove", (e) => {
-    e.preventDefault(); // Previne scroll durante o parallax
-    const touch = e.touches[0];
-    moveStars(touch.clientX, touch.clientY);
-}, { passive: false });
-
-// Também funciona com o toque inicial (touchstart)
-document.addEventListener("touchstart", (e) => {
-    const touch = e.touches[0];
-    moveStars(touch.clientX, touch.clientY);
-}, { passive: true });
-
-// Reset suave quando sai da tela
-document.addEventListener("mouseleave", () => {
-    stars.style.transform = "translate(0, 0)";
-});
-
+// Elementos de Áudio
 const btnAudio = document.getElementById('btn-audio');
 const bgAmbient = document.getElementById('bg-ambient');
 const glitchSfx = document.getElementById('glitch-sfx');
-// Selecionamos o elemento que tem a animação no CSS
-const glitchElement = document.querySelector('.glitch-effect');
 const sfxStartup = document.getElementById('sfx-startup');
 const sfxShutdown = document.getElementById('sfx-shutdown');
 
 let isPlaying = false;
 
-const fadeOut = (audioElement) => {
-    // Pegamos o volume atual (ex: 0.4)
-    let volume = audioElement.volume;
+/* ==========================================================================
+   2. SISTEMA DE ENERGIA (COLOR PICKER)
+   ========================================================================== */
+colorPicker.addEventListener('input', (e) => {
+    const newColor = e.target.value;
 
+    // Atualiza CSS Variable global
+    document.documentElement.style.setProperty('--primary-neon', newColor);
+
+    // Feedback visual no painel de controles
+    if (controlsPanel) {
+        controlsPanel.style.borderColor = newColor;
+        controlsPanel.style.boxShadow = `0 0 15px ${newColor}`;
+    }
+});
+
+/* ==========================================================================
+   3. MOTOR DE MOVIMENTO (PARALLAX)
+   ========================================================================== */
+const moveStars = (x, y) => {
+    const xPercent = x / window.innerWidth;
+    const yPercent = y / window.innerHeight;
+
+    // Range de movimento: -15px a +15px
+    const moveX = (xPercent - 0.5) * 30;
+    const moveY = (yPercent - 0.5) * 30;
+
+    stars.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
+};
+
+// Eventos de Input (Mouse e Touch)
+document.addEventListener("mousemove", (e) => moveStars(e.clientX, e.clientY));
+
+document.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 0) {
+        e.preventDefault();
+        moveStars(e.touches[0].clientX, e.touches[0].clientY);
+    }
+}, { passive: false });
+
+document.addEventListener("mouseleave", () => {
+    stars.style.transform = "translate(0, 0)";
+});
+
+/* ==========================================================================
+   4. NÚCLEO DE ÁUDIO E SINCRONIA
+   ========================================================================== */
+const fadeOut = (audioElement) => {
+    let volume = audioElement.volume;
     const interval = setInterval(() => {
         if (volume > 0.02) {
             volume -= 0.02;
@@ -77,50 +73,51 @@ const fadeOut = (audioElement) => {
             audioElement.pause();
             clearInterval(interval);
         }
-    }, 50); // A cada 50ms reduz um pouco
+    }, 50);
 };
 
-// 1. O BOTÃO: Ele liga e desliga os sons, além de mudar o texto e estilo
+// Gerenciador do Botão Principal
 btnAudio.addEventListener('click', () => {
     if (!isPlaying) {
-        sfxStartup.play();
-
-        setTimeout(() => {
-            bgAmbient.currentTime = 0;
-            bgAmbient.play();
-            bgAmbient.volume = 0.4; // Volume inicial limpo
-        }, 1000);
-
-        btnAudio.innerText = "SISTEMAS ONLINE 🚀";
-        btnAudio.classList.add('active');
-        isPlaying = true;
+        activateSystems();
     } else {
-        sfxShutdown.play();
-
-        // 2. CHAME A FUNÇÃO AQUI (Substituindo o bgAmbient.pause())
-        fadeOut(bgAmbient);
-
-        glitchSfx.pause();
-
-        btnAudio.innerText = "SISTEMAS OFFLINE 📡";
-        btnAudio.classList.remove('active');
-        isPlaying = false;
+        deactivateSystems();
     }
 });
 
-// 2. O MAESTRO: Ele vigia a animação e solta o som no momento certo
-// 'animationiteration' acontece toda vez que a animação de 4s reseta
+const activateSystems = () => {
+    sfxStartup.play();
+    setTimeout(() => {
+        bgAmbient.currentTime = 0;
+        bgAmbient.play();
+        bgAmbient.volume = 0.4;
+    }, 1000);
+
+    btnAudio.innerText = "SISTEMAS ONLINE 🚀";
+    btnAudio.classList.add('active');
+    isPlaying = true;
+};
+
+const deactivateSystems = () => {
+    sfxShutdown.play();
+    fadeOut(bgAmbient);
+    glitchSfx.pause();
+
+    btnAudio.innerText = "SISTEMAS OFFLINE 📡";
+    btnAudio.classList.remove('active');
+    isPlaying = false;
+};
+
+// Maestro da Sincronia (Glitch)
 glitchElement.addEventListener('animationiteration', () => {
     if (isPlaying) {
-        // Como o glitch visual no CSS acontece entre 91% e 95%...
-        // ...nós esperamos 3.6 segundos (90% de 4s) para soltar o som!
+        // Dispara o som aos 90% da animação de 4s (3.6s)
         setTimeout(() => {
-            if (isPlaying) { // Verifica se o usuário não desligou o som nesse meio tempo
-                glitchSfx.currentTime = 0; // Volta o som para o início
+            if (isPlaying) {
+                glitchSfx.currentTime = 0;
                 glitchSfx.volume = 0.2;
                 glitchSfx.play();
             }
         }, 3600);
     }
 });
-

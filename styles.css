@@ -1,13 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+/* ==========================================================================
+   1. CONFIGURAÇÕES E DESIGN SYSTEM
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap');
 
 :root {
+    /* Cores Neon */
     --primary-neon: #00f2ff;
     --secondary-neon: #ff00ff;
+
+    /* Ambiente Espacial */
     --space-bg-start: #1b2735;
     --space-bg-end: #090a0f;
     --star-white: #ffffff;
     --primary-star-shadow: #56ccf2;
     --secondary-star-shadow: #bb6bd9;
+
+    /* UI / Glassmorphism */
+    --glass-bg: rgba(0, 0, 0, 0.5);
+    --glass-blur: blur(5px);
 }
 
 * {
@@ -22,6 +32,7 @@ body {
     height: 100%;
     width: 100%;
     overflow: hidden;
+    /* Trava scroll indesejado */
 }
 
 body {
@@ -33,21 +44,134 @@ body {
     position: relative;
 }
 
-.controls {
+/* Camada de Textura de Ruído Estelar */
+body::before {
+    content: "";
     position: fixed;
+    inset: 0;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* ==========================================================================
+   2. ELEMENTOS DE FUNDO (ESTRELAS E PARALLAX)
+   ========================================================================== */
+.stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform;
+    transition: transform 0.1s ease-out;
+}
+
+/* Camadas de Estrelas via Box-Shadow (técnica para fazer estrelas com sombras) */
+.stars::before,
+.stars::after {
+    content: "";
+    position: absolute;
+    background: transparent;
+}
+
+.stars::before {
+    width: 2px;
+    height: 2px;
+    box-shadow: 10vw 20vh var(--star-white), 35vw 45vh var(--star-white), 80vw 10vh var(--star-white), 20vw 80vh var(--star-white), 60vw 30vh var(--primary-star-shadow), 90vw 90vh var(--star-white), 15vw 5vh var(--star-white), 50vw 50vh var(--secondary-star-shadow), 75vw 65vh var(--star-white), 25vw 15vh var(--star-white), 70vw 40vh var(--primary-star-shadow), 40vw 70vh var(--star-white);
+    animation: twinkle 3s ease-in-out infinite alternate;
+}
+
+.stars::after {
+    width: 3px;
+    height: 3px;
+    box-shadow: 5vw 50vh var(--star-white), 45vw 10vh var(--secondary-star-shadow), 85vw 60vh var(--star-white), 30vw 90vh var(--primary-star-shadow), 65vw 25vh var(--star-white), 95vw 75vh var(--secondary-star-shadow);
+    animation: twinkle 4s ease-in-out infinite alternate-reverse;
+}
+
+.shooting-star {
+    position: absolute;
+    top: 20%;
+    left: -10%;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, #fff, transparent);
+    animation: shooting 5s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   3. O ECLIPSE (O CORAÇÃO DO PROJETO)
+   ========================================================================== */
+.galaxy-center {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    /* A matemática mágica da responsividade */
+    width: min(60vw, 60vh);
+    height: min(60vw, 60vh);
+    max-width: 400px;
+    max-height: 400px;
+}
+
+.moon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #050505;
+    position: relative;
+    z-index: 2;
+    box-shadow: inset -10px -10px 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Brilho de Energia Solar */
+.moon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    z-index: -1;
+    background-color: var(--primary-neon);
+    animation: sci-fi-eclipse 4s ease-in-out infinite alternate;
+}
+
+/* Efeito Glitch de Interferência */
+.glitch-effect::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--secondary-neon);
+    z-index: -2;
+    opacity: 0;
+    animation: glitch-anim 4s infinite;
+}
+
+/* ==========================================================================
+   4. INTERFACE DE CONTROLE (UI)
+   ========================================================================== */
+.controls,
+.audio-controls {
+    position: fixed;
+    z-index: 100;
+}
+
+.controls {
     top: 20px;
     left: 20px;
-    z-index: 100;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
     padding: 15px;
     border-radius: 15px;
     border: 1px solid var(--primary-neon);
-    color: white;
+    color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    backdrop-filter: blur(5px);
 }
 
 #colorPicker {
@@ -58,74 +182,39 @@ body {
     background: none;
 }
 
-/* Container central - ESSENCIAL para responsividade */
-.galaxy-center {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    /* Mantém proporção quadrada responsiva */
-    width: min(60vw, 60vh);
-    height: min(60vw, 60vh);
-    max-width: 400px;
-    max-height: 400px;
+.audio-controls {
+    bottom: 20px;
+    right: 20px;
 }
 
-/* Estrelas responsivas com múltiplas camadas */
-.stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    /* Importante para o parallax funcionar */
-    will-change: transform;
-    transition: transform 0.1s ease-out;
-}
-
-/* Camada 1 de estrelas - pequenas */
-.stars::before {
-    content: "";
-    position: absolute;
-    width: 2px;
-    height: 2px;
+.sci-fi-btn {
     background: transparent;
-    box-shadow:
-        10vw 20vh var(--star-white),
-        35vw 45vh var(--star-white),
-        80vw 10vh var(--star-white),
-        20vw 80vh var(--star-white),
-        60vw 30vh var(--primary-star-shadow),
-        90vw 90vh var(--star-white),
-        15vw 5vh var(--star-white),
-        50vw 50vh var(--secondary-star-shadow),
-        75vw 65vh var(--star-white),
-        25vw 15vh var(--star-white),
-        70vw 40vh var(--primary-star-shadow),
-        40vw 70vh var(--star-white);
-    animation: twinkle 3s ease-in-out infinite alternate;
+    color: var(--primary-neon);
+    border: 2px solid var(--primary-neon);
+    padding: 10px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+    box-shadow: 0 0 10px var(--primary-neon);
+    font-size: 14px;
 }
 
-/* Camada 2 de estrelas - médias */
-.stars::after {
-    content: "";
-    position: absolute;
-    width: 3px;
-    height: 3px;
+.sci-fi-btn:hover,
+.sci-fi-btn.active {
+    background: var(--primary-neon);
+    color: var(--space-bg-end);
+    box-shadow: 0 0 20px var(--primary-neon);
+}
+
+.sci-fi-btn.active {
+    border-color: var(--secondary-neon);
+    color: var(--secondary-neon);
     background: transparent;
-    box-shadow:
-        5vw 50vh var(--star-white),
-        45vw 10vh var(--secondary-star-shadow),
-        85vw 60vh var(--star-white),
-        30vw 90vh var(--primary-star-shadow),
-        65vw 25vh var(--star-white),
-        95vw 75vh var(--secondary-star-shadow);
-    animation: twinkle 4s ease-in-out infinite alternate-reverse;
 }
 
+/* ==========================================================================
+   5. ANIMAÇÕES (@KEYFRAMES)
+   ========================================================================== */
 @keyframes twinkle {
     0% {
         opacity: 0.7;
@@ -136,58 +225,17 @@ body {
     }
 }
 
-.shooting-star {
-    position: absolute;
-    top: 20%;
-    left: -10%;
-    width: 100px;
-    height: 2px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 1), transparent);
-    animation: shooting 5s linear infinite;
-    z-index: 1;
-    pointer-events: none;
-}
-
 @keyframes shooting {
     0% {
         transform: translateX(0) translateY(0) rotate(20deg);
         opacity: 1;
     }
 
-    20% {
-        transform: translateX(120vw) translateY(30vh) rotate(20deg);
-        opacity: 0;
-    }
-
+    20%,
     100% {
         transform: translateX(120vw) translateY(30vh) rotate(20deg);
         opacity: 0;
     }
-}
-
-/* ECLIPSE - Agora responsivo com unidades relativas */
-.moon {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: #050505;
-    position: relative;
-    z-index: 2; /* Lua escura na frente (z-index maior) */
-    box-shadow: inset -10px -10px 20px rgba(255, 255, 255, 0.1);
-}
-
-.moon::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    z-index: -1; /* Brilho neon atrás (z-index menor) */
-    background-color: var(--primary-neon);
-    animation: sci-fi-eclipse 4s ease-in-out infinite alternate;
-    /* Garante que o brilho apareça atrás */
-    top: 0;
-    left: 0;
 }
 
 @keyframes sci-fi-eclipse {
@@ -202,21 +250,6 @@ body {
         box-shadow: 0 0 50px var(--primary-neon), 0 0 100px var(--secondary-neon), 0 0 150px var(--primary-neon);
         opacity: 1;
     }
-}
-
-.glitch-effect::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: transparent;
-    border: 2px solid var(--secondary-neon);
-    z-index: -2; /* Mais atrás ainda */
-    opacity: 0;
-    animation: glitch-anim 4s infinite;
 }
 
 @keyframes glitch-anim {
@@ -246,53 +279,9 @@ body {
     }
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/stardust.png');
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: 5;
-}
-
-.audio-controls {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-}
-
-.sci-fi-btn {
-    background: transparent;
-    color: var(--primary-neon);
-    border: 2px solid var(--primary-neon);
-    padding: 10px 20px;
-    font-family: 'Montserrat', sans-serif;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: 0.3s;
-    box-shadow: 0 0 10px var(--primary-neon);
-    font-size: 14px;
-    white-space: nowrap;
-}
-
-.sci-fi-btn:hover {
-    background: var(--primary-neon);
-    color: var(--space-bg-end);
-    box-shadow: 0 0 20px var(--primary-neon);
-}
-
-.sci-fi-btn.active {
-    border-color: var(--secondary-neon);
-    color: var(--secondary-neon);
-    box-shadow: 0 0 10px var(--secondary-neon);
-}
-
-/* RESPONSIVIDADE APRIMORADA */
+/* ==========================================================================
+   6. RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
 @media (max-width: 768px) {
     .galaxy-center {
         width: min(70vw, 70vh);
@@ -302,22 +291,7 @@ body::before {
     .controls {
         top: 10px;
         left: 10px;
-        padding: 10px;
         font-size: 12px;
-    }
-
-    .audio-controls {
-        bottom: 10px;
-        right: 10px;
-    }
-
-    .sci-fi-btn {
-        padding: 8px 15px;
-        font-size: 12px;
-    }
-
-    .shooting-star {
-        animation-duration: 3s;
     }
 }
 
@@ -326,32 +300,11 @@ body::before {
         width: min(80vw, 80vh);
         height: min(80vw, 80vh);
     }
-
-    .controls {
-        width: auto;
-        max-width: 150px;
-    }
-
-    #colorPicker {
-        width: 40px;
-        height: 25px;
-    }
 }
 
-/* Landscape mode em mobile */
 @media (max-height: 500px) and (orientation: landscape) {
     .galaxy-center {
         width: min(50vh, 50vw);
         height: min(50vh, 50vw);
-    }
-
-    .controls {
-        top: 5px;
-        left: 5px;
-    }
-
-    .audio-controls {
-        bottom: 5px;
-        right: 5px;
     }
 }
